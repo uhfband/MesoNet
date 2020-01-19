@@ -303,11 +303,14 @@ def compute_accuracy(classifier, dirname, frame_subsample_count = 30):
         # Compute face locations and store them in the face finder
         face_finder = FaceFinder(join(dirname, vid), load_first_face = False)
         skipstep = max(floor(face_finder.length / frame_subsample_count), 0)
-        face_finder.find_faces(resize=0.5, skipstep = skipstep)
-        
-        print('Predicting ', vid)
-        gen = FaceBatchGenerator(face_finder)
-        p = predict_faces(gen, classifier)
+        n = face_finder.find_faces(resize=0.5, skipstep = skipstep)
+        if n==0:
+            print('No faces find!')
+            p = 0.5
+        else:
+            print('Predicting ', vid)
+            gen = FaceBatchGenerator(face_finder)
+            p = predict_faces(gen, classifier)
         
         predictions[vid[:-4]] = (np.mean(p > 0.5), p)
     return predictions
