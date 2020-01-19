@@ -202,7 +202,7 @@ class FaceFinder(Video):
 
         print('Face extraction report of', 'not_found :', not_found)
         print('Face extraction report of', 'no_face :', no_face)
-        return 0
+        return len(self.faces)
     
     def get_face(self, i):
         ''' Basic unused face extraction without alignment '''
